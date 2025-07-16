@@ -100,8 +100,8 @@ export default function StaffManagement() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">Staff Management</h2>
+    <div>
+      <h2 className="text-xl font-semibold mb-4">Manage Staff Users</h2>
 
       {error && (
         <p className="mb-3 text-red-600 text-sm font-medium bg-red-50 px-3 py-2 rounded">
@@ -109,7 +109,7 @@ export default function StaffManagement() {
         </p>
       )}
 
-      <form onSubmit={handleCreate} className="grid md:grid-cols-2 gap-4 mb-6">
+      <form onSubmit={handleCreate} className="grid gap-4 mb-6">
         <input
           type="text"
           name="first_name"
@@ -117,7 +117,7 @@ export default function StaffManagement() {
           placeholder="First Name"
           value={formData.first_name}
           onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="text"
@@ -126,7 +126,7 @@ export default function StaffManagement() {
           placeholder="Surname"
           value={formData.surname}
           onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="email"
@@ -135,7 +135,7 @@ export default function StaffManagement() {
           placeholder="Email"
           value={formData.email}
           onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
         <input
           type="password"
@@ -144,14 +144,14 @@ export default function StaffManagement() {
           placeholder="Password"
           value={formData.password}
           onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded"
+          className="border border-gray-300 p-2 rounded"
         />
 
         <select
           name="role"
           value={formData.role}
           onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded"
+          className="border border-gray-300 p-2 rounded"
         >
           <option value="staff">Staff</option>
           <option value="admin">Admin</option>
@@ -160,9 +160,7 @@ export default function StaffManagement() {
         <button
           type="submit"
           disabled={loading}
-          className={`bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 mt-2 ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          className="submit-btn"
         >
           {loading ? 'Creating...' : 'Add Staff'}
         </button>

@@ -51,28 +51,28 @@ export default function ReverseDocuments() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
+    <div>
       <h2 className="text-xl font-semibold mb-4">Reverse Document Status</h2>
 
-      <div className="flex items-center space-x-2 mb-4">
+      <div className="mb-4">
         <input
           type="text"
           value={penNumber}
           onChange={(e) => setPenNumber(e.target.value)}
           placeholder="Enter PEN Number"
-          className="border p-2 rounded-lg w-64"
+          className="border border-gray-300 p-2 rounded w-full mb-2"
         />
         <button
           onClick={fetchDocuments}
           disabled={!penNumber || loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="submit-btn"
         >
-          Fetch
+          Fetch Documents
         </button>
       </div>
 
       {message && (
-        <p className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
+        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
           {message.text}
         </p>
       )}

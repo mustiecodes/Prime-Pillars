@@ -6,6 +6,7 @@ import { fetchJSON } from '@/lib/api';
 export default function PFASettings() {
   const [pfas, setPfas] = useState<string[]>([]);
   const [newPfa, setNewPfa] = useState('');
+  const [selectedPfa, setSelectedPfa] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'error' | 'success'; text: string } | null>(null);
 
@@ -16,7 +17,9 @@ export default function PFASettings() {
   const fetchPfas = async () => {
     try {
       const data = await fetchJSON('http://localhost:5000/api/admin/pfa');
-      setPfas(data.map((pfa: { name: string }) => pfa.name));
+      const names = data.map((pfa: { name: string }) => pfa.name);
+      setPfas(names);
+      setSelectedPfa(names[0] || '');
     } catch (err: any) {
       setMessage({ type: 'error', text: err.message });
     }
@@ -46,12 +49,14 @@ export default function PFASettings() {
     }
   };
 
-  const handleDelete = async (name: string) => {
+  const handleDelete = async () => {
+    if (!selectedPfa) return;
+
     setLoading(true);
     setMessage(null);
 
     try {
-      const result = await fetchJSON(`http://localhost:5000/api/admin/pfa/${encodeURIComponent(name)}`, {
+      const result = await fetchJSON(`http://localhost:5000/api/admin/pfa/${encodeURIComponent(selectedPfa)}`, {
         method: 'DELETE',
       });
 
@@ -65,49 +70,49 @@ export default function PFASettings() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
+    <div>
       <h2 className="text-xl font-semibold mb-4">Manage PFAs</h2>
 
-      <div className="flex space-x-2 mb-4">
+      <div className="mb-6">
         <input
           value={newPfa}
           onChange={(e) => setNewPfa(e.target.value)}
-          placeholder="Enter PFA name"
-          className="flex-1 border p-2 rounded-lg"
+          placeholder="PFA Name"
+          className="border border-gray-300 p-2 rounded w-full mb-2"
         />
         <button
           onClick={handleAdd}
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="submit-btn"
         >
-          Add
+          Add PFA
         </button>
       </div>
 
       {message && (
-        <p className={`mb-2 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
+        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
           {message.text}
         </p>
       )}
 
-      {pfas.length > 0 ? (
-        <ul className="divide-y">
+      <div>
+        <select
+          className="border border-gray-300 p-2 rounded w-full mb-2"
+          value={selectedPfa}
+          onChange={(e) => setSelectedPfa(e.target.value)}
+        >
           {pfas.map((pfa) => (
-            <li key={pfa} className="py-2 flex justify-between items-center">
-              <span>{pfa}</span>
-              <button
-                onClick={() => handleDelete(pfa)}
-                disabled={loading}
-                className="text-red-600 hover:text-red-800 text-sm"
-              >
-                Remove
-              </button>
-            </li>
+            <option key={pfa} value={pfa}>{pfa}</option>
           ))}
-        </ul>
-      ) : (
-        <p className="text-sm text-gray-500">No PFAs found.</p>
-      )}
+        </select>
+        <button
+          onClick={handleDelete}
+          disabled={loading || !selectedPfa}
+          className="submit-btn"
+        >
+          Remove Selected PFA
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,63 +1,81 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import SubmittedApplications from './tabs/SubmittedApplications'
-import ApprovedApplications from './tabs/ApprovedApplications'
-import Reports from './tabs/Reports'
-import AccountOpening from './tabs/AccountOpening'
-import SearchBar from '../components/SearchBar' // ✅ Import SearchBar
-
-const tabs = [
-  { label: 'Submitted Applications', key: 'submitted' },
-  { label: 'Approved Applications', key: 'approved' },
-  { label: 'Reports', key: 'reports' },
-  { label: 'Account Opening', key: 'account' }
-]
+import { useState } from 'react';
+import SubmittedApplications from './tabs/SubmittedApplications';
+import ApprovedApplications from './tabs/ApprovedApplications';
+// import QueriedApplications from './tabs/QueriedApplications';
+import Reports from './tabs/Reports';
+import AccountOpening from './tabs/AccountOpening';
+// import AccountRecords from './tabs/Reports';
 
 export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState('submitted')
+  const [activeTab, setActiveTab] = useState('submitted');
 
   const renderActiveTab = () => {
     switch (activeTab) {
       case 'submitted':
-        return <SubmittedApplications />
+        return <SubmittedApplications />;
       case 'approved':
-        return <ApprovedApplications />
+        return <ApprovedApplications />;
+      // case 'queried':
+      //   return <QueriedApplications />;
       case 'reports':
-        return <Reports />
-      case 'account':
-        return <AccountOpening />
+        return <Reports />;
+      case 'records':
+        return <AccountOpening />;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
-    <main className="min-h-screen bg-white p-6">
-      <h1 className="text-2xl font-semibold mb-6">Admin Dashboard</h1>
+    <div className="font-sans bg-gray-100 min-h-screen text-gray-900">
+      <nav className="flex justify-center bg-[#0057A0] space-x-4 py-2">
+        <button
+          onClick={() => setActiveTab('submitted')}
+          className={`px-4 py-2 text-white rounded ${
+            activeTab === 'submitted' ? 'bg-[#C8102E]' : 'hover:bg-[#C8102E]'
+          }`}
+        >
+          Submitted Applications
+        </button>
+        <button
+          onClick={() => setActiveTab('approved')}
+          className={`px-4 py-2 text-white rounded ${
+            activeTab === 'approved' ? 'bg-[#C8102E]' : 'hover:bg-[#C8102E]'
+          }`}
+        >
+          Approved Applications
+        </button>
+        {/* <button
+          onClick={() => setActiveTab('queried')}
+          className={`px-4 py-2 text-white rounded ${
+            activeTab === 'queried' ? 'bg-[#C8102E]' : 'hover:bg-[#C8102E]'
+          }`}
+        >
+          Queried Applications
+        </button> */}
+        <button
+          onClick={() => setActiveTab('reports')}
+          className={`px-4 py-2 text-white rounded ${
+            activeTab === 'reports' ? 'bg-[#C8102E]' : 'hover:bg-[#C8102E]'
+          }`}
+        >
+          Reports
+        </button>
+        <button
+          onClick={() => setActiveTab('records')}
+          className={`px-4 py-2 text-white rounded ${
+            activeTab === 'records' ? 'bg-[#C8102E]' : 'hover:bg-[#C8102E]'
+          }`}
+        >
+          Account Records
+        </button>
+      </nav>
 
-      {/* ✅ SearchBar at top, visible across all tabs */}
-      <SearchBar />
-
-      <div className="flex space-x-4 mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 text-sm rounded-full transition ${
-              activeTab === tab.key
-                ? 'bg-blue-600 text-white shadow'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <section className="mt-4">
+      <main className="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
         {renderActiveTab()}
-      </section>
-    </main>
-  )
+      </main>
+    </div>
+  );
 }
