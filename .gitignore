@@ -1,0 +1,11 @@
+# Ignore all node_modules folders
+**/node_modules/
+
+# Ignore Python virtual environment in server/
+server/.venv/
+
+# Optional: ignore environment files
+.env
+*.env
+
+documents
