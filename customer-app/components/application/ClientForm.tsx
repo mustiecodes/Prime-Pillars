@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import FormInput from '@/components/common/FormInput'
 import FormSelect from '@/components/common/FormSelect'
@@ -50,9 +51,12 @@ const REQUIRED_DOCS = [
   'Consent Form',
   'Indemnity Form',
   'Application Letter',
+  'Passport',
 ]
 
 export default function ClientForm({ initialData }: Props) {
+  const router = useRouter()
+
   const [form, setForm] = useState<FormData>({
     penNumber: '',
     firstName: '',
@@ -109,30 +113,29 @@ export default function ClientForm({ initialData }: Props) {
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const { name, value } = e.target
+    const { name, value } = e.target
 
-  if (['bvn', 'nin'].includes(name)) {
-    if (!/^\d*$/.test(value)) return
-    if (value.length > 12) return
-  }
+    if (['bvn', 'nin'].includes(name)) {
+      if (!/^\d*$/.test(value)) return
+      if (value.length > 12) return
+    }
 
-  if (['phone1', 'phone2'].includes(name)) {
-    if (!/^\d*$/.test(value)) return
-    if (value.length > 11) return
-  }
+    if (['phone1', 'phone2'].includes(name)) {
+      if (!/^\d*$/.test(value)) return
+      if (value.length > 11) return
+    }
 
-  if (name === 'rsaBalance') {
-    const cleaned = value.replace(/,/g, '').replace(/\D/g, '')
-    const formatted = cleaned.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    setForm((prev) => ({ ...prev, [name]: formatted }))
+    if (name === 'rsaBalance') {
+      const cleaned = value.replace(/,/g, '').replace(/\D/g, '')
+      const formatted = cleaned.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      setForm((prev) => ({ ...prev, [name]: formatted }))
+      setErrors((prev) => ({ ...prev, [name]: '' }))
+      return
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }))
     setErrors((prev) => ({ ...prev, [name]: '' }))
-    return
   }
-
-  setForm((prev) => ({ ...prev, [name]: value }))
-  setErrors((prev) => ({ ...prev, [name]: '' }))
-}
-
 
   const handleRequiredDocUpload = (docTitle: string, file: File | null) => {
     setRequiredDocs((prev) => ({ ...prev, [docTitle]: file }))
@@ -154,7 +157,8 @@ export default function ClientForm({ initialData }: Props) {
     setOptionalDocs((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     setSubmitting(true)
     setMessage('')
     setErrors({})
@@ -174,8 +178,8 @@ export default function ClientForm({ initialData }: Props) {
     }
 
     try {
-      await submitApplication(form, requiredDocs, optionalDocs)
-      setMessage('✅ Application submitted successfully!')
+      await submitApplication(form, requiredDocs, optionalDocs, requiredDocs['Passport'])
+      router.push(`/client/${form.penNumber}`)
     } catch {
       setMessage('❌ Could not submit application.')
     } finally {
@@ -184,7 +188,7 @@ export default function ClientForm({ initialData }: Props) {
   }
 
   return (
-    <form className="space-y-10">
+    <form className="space-y-10" onSubmit={handleSubmit}>
       <section>
         <h2 className="text-xl font-semibold text-[#0057A0] border-b pb-2">Biodata</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -229,7 +233,7 @@ export default function ClientForm({ initialData }: Props) {
       </section>
 
       <button
-        onClick={handleSubmit}
+        type="submit"
         disabled={submitting}
         className="w-full bg-[#0057A0] hover:bg-[#003f7a] text-white font-semibold py-3 rounded-md"
       >

@@ -1,7 +1,8 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FormInput from '@/components/common/FormInput'
+import toast from 'react-hot-toast'
 
 interface AuthFormProps {
   type?: 'login' | 'register'
@@ -15,7 +16,7 @@ interface AuthFormProps {
     other_names?: string
   }
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onSubmit: () => Promise<void>
+  onSubmit: (formattedPenNumber: string) => Promise<void>
   errors: Record<string, string>
 }
 
@@ -28,8 +29,49 @@ const AuthForm: React.FC<AuthFormProps> = ({
 }) => {
   const isRegister = type === 'register'
 
+  const passwordIsValid = (password: string) => {
+    const hasLetter = /[a-zA-Z]/.test(password)
+    const hasNumber = /\d/.test(password)
+    return password.length >= 8 && hasLetter && hasNumber
+  }
+
+  const [passwordValid, setPasswordValid] = useState(false)
+
+  useEffect(() => {
+    setPasswordValid(passwordIsValid(formData.password || ''))
+  }, [formData.password])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (!passwordValid) {
+      toast.error('Password must be at least 8 characters and contain both letters and numbers')
+      return
+    }
+
+    if (isRegister && formData.password !== formData.confirm_password) {
+      toast.error('Passwords do not match')
+      return
+    }
+
+    const rawPen = formData.pen_number?.replace(/\D/g, '') || ''
+    const formattedPen = `PEN${rawPen}`
+
+    onSubmit(formattedPen)
+  }
+
   return (
-    <form onSubmit={(e) => { e.preventDefault(); onSubmit() }} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <FormInput
+        label="PEN Number"
+        name="pen_number"
+        value={formData.pen_number || ''}
+        onChange={(e) => {
+          if (/^\d*$/.test(e.target.value)) onChange(e)
+        }}
+        error={errors.pen_number}
+      />
+
       {isRegister && (
         <>
           <FormInput
@@ -63,22 +105,19 @@ const AuthForm: React.FC<AuthFormProps> = ({
         </>
       )}
 
-      <FormInput
-        label="PEN Number"
-        name="pen_number"
-        value={formData.pen_number || ''}
-        onChange={onChange}
-        error={errors.pen_number}
-      />
-
-      <FormInput
-        label="Password"
-        name="password"
-        type="password"
-        value={formData.password || ''}
-        onChange={onChange}
-        error={errors.password}
-      />
+      <div>
+        <FormInput
+          label="Password"
+          name="password"
+          type="password"
+          value={formData.password || ''}
+          onChange={onChange}
+          error={errors.password}
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Password must be at least 8 characters, contain letters and numbers.
+        </p>
+      </div>
 
       {isRegister && (
         <FormInput
@@ -93,7 +132,12 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        disabled={!passwordValid}
+        className={`w-full py-2 rounded transition ${
+          passwordValid
+            ? 'bg-blue-600 text-white hover:bg-blue-700'
+            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        }`}
       >
         {isRegister ? 'Register' : 'Login'}
       </button>

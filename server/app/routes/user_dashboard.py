@@ -30,6 +30,7 @@ def get_clients():
             })
     return jsonify(result)
 
+
 # ---------------- CLIENT PROFILE ---------------- #
 @dashboard_bp.route('/api/dashboard/client/<pen_number>', methods=['GET'])
 def get_client_profile(pen_number):
@@ -57,6 +58,7 @@ def get_client_profile(pen_number):
         'documents': documents
     })
 
+
 # ---------------- DOCUMENT REVIEW ---------------- #
 @dashboard_bp.route('/api/dashboard/document/<int:doc_id>/review', methods=['POST'])
 def review_document(doc_id):
@@ -73,6 +75,7 @@ def review_document(doc_id):
     db.session.commit()
 
     return jsonify({'message': 'Document reviewed'})
+
 
 # ---------------- APPROVE APPLICATION ---------------- #
 @dashboard_bp.route('/api/dashboard/application/<int:application_id>/submit', methods=['POST'])
@@ -100,6 +103,7 @@ Housing Admin Team
     send_email("✅ Application Approved", message, recipients)
 
     return jsonify({'message': 'Application approved and email sent to client.'})
+
 
 # ---------------- SEND FEEDBACK ---------------- #
 @dashboard_bp.route('/api/dashboard/application/<int:application_id>/feedback', methods=['POST'])
@@ -139,6 +143,7 @@ Housing Admin Team
 
     return jsonify({'message': 'Feedback sent and application removed.', 'sent_to': recipients})
 
+
 # ---------------- SERVE FILES ---------------- #
 @dashboard_bp.route('/uploads/<path:filename>')
 def serve_uploaded_file(filename):
@@ -146,6 +151,7 @@ def serve_uploaded_file(filename):
     if not os.path.exists(full_path):
         print(f"[❌] File not found: {full_path}")
     return send_from_directory(UPLOAD_DIR, filename)
+
 
 # ---------------- APPROVED APPLICATIONS ---------------- #
 @dashboard_bp.route('/api/dashboard/approved', methods=['GET'])
@@ -186,6 +192,7 @@ def get_approved_applications():
         })
 
     return jsonify(results)
+
 
 # ---------------- REPORT GENERATION ---------------- #
 @dashboard_bp.route('/api/reports', methods=['POST'])
@@ -241,6 +248,7 @@ def generate_report():
         'filename': filename,
         'download_url': f"/uploads/{filename}"
     })
+
 
 # ---------------- CLIENT SUBMISSION ---------------- #
 @dashboard_bp.route('/api/application/submit', methods=['POST'])
@@ -299,6 +307,7 @@ def create_application_submission():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+
 # ---------------- ACCOUNT RECORDS ---------------- #
 @dashboard_bp.route('/api/dashboard/accounts', methods=['GET'])
 def get_accounts():
@@ -318,6 +327,7 @@ def get_accounts():
         if name in r.name.lower() and address in r.address.lower() and acct in r.account_number.lower()
     ]
     return jsonify(results)
+
 
 @dashboard_bp.route('/api/dashboard/accounts', methods=['POST'])
 def upload_accounts_excel():

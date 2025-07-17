@@ -28,10 +28,14 @@ export async function apiPost<T = any>(path: string, data: Record<string, any>):
   return handleResponse(res)
 }
 
+/**
+ * Submits the application form along with required and optional documents + passport.
+ */
 export async function submitApplication(
   form: Record<string, any>,
   requiredDocs: Record<string, File | null>,
-  optionalDocs: { title: string; file: File | null }[]
+  optionalDocs: { title: string; file: File | null }[],
+  passport?: File | null
 ): Promise<any> {
   const formData = new FormData()
 
@@ -57,12 +61,16 @@ export async function submitApplication(
     }
   })
 
+  if (passport) {
+    formData.append('passport', passport)
+  }
+
   const res = await fetch(buildUrl('/api/application/submit'), {
     method: 'POST',
     credentials: 'include',
     body: formData,
   })
-  
+
   return handleResponse(res)
 }
 

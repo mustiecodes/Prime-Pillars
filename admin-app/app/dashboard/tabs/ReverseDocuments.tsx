@@ -52,7 +52,7 @@ export default function ReverseDocuments() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Reverse Document Status</h2>
+      <h2 className="text-xl font-semibold mb-4 text-black">Reverse Document Status</h2>
 
       <div className="mb-4">
         <input
@@ -60,7 +60,7 @@ export default function ReverseDocuments() {
           value={penNumber}
           onChange={(e) => setPenNumber(e.target.value)}
           placeholder="Enter PEN Number"
-          className="border border-gray-300 p-2 rounded w-full mb-2"
+          className="border border-gray-300 p-2 rounded w-full mb-2 text-black"
         />
         <button
           onClick={fetchDocuments}
@@ -72,7 +72,7 @@ export default function ReverseDocuments() {
       </div>
 
       {message && (
-        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
+        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-[#C8102E]' : 'text-green-600'}`}>
           {message.text}
         </p>
       )}
@@ -87,7 +87,7 @@ export default function ReverseDocuments() {
               {doc.status === 'accepted' && (
                 <button
                   onClick={() => reverseStatus(doc.id)}
-                  className="text-red-600 hover:text-red-800 text-sm"
+                  className="text-[#C8102E] hover:text-red-800 text-sm"
                 >
                   Reverse to Pending
                 </button>

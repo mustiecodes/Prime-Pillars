@@ -28,7 +28,7 @@ export default function DashboardPage() {
               className={`font-semibold pb-2 ${
                 activeTab === tab.key
                   ? 'border-b-4 border-[#0057A0] text-[#0057A0]'
-                  : 'border-b-4 border-transparent'
+                  : 'border-b-4 border-transparent text-black'
               }`}
             >
               {tab.label}

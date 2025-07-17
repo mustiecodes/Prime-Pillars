@@ -46,7 +46,7 @@ export default function ClientProfile() {
             <div className="flex flex-col items-center">
               <p className="mb-2 font-medium">Passport Photo</p>
               <img
-                src="https://via.placeholder.com/120x140.png?text=Passport"
+                src={`/uploads/passport-${penNumber}.jpg`} // Assuming this naming convention
                 alt="Passport"
                 className="w-28 h-36 object-cover border rounded"
               />

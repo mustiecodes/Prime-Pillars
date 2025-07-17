@@ -101,10 +101,10 @@ export default function StaffManagement() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Manage Staff Users</h2>
+      <h2 className="text-xl font-semibold mb-4 text-black">Manage Staff Users</h2>
 
       {error && (
-        <p className="mb-3 text-red-600 text-sm font-medium bg-red-50 px-3 py-2 rounded">
+        <p className="mb-3 text-[#C8102E] text-sm font-medium bg-red-50 px-3 py-2 rounded">
           ⚠️ {error}
         </p>
       )}
@@ -117,7 +117,7 @@ export default function StaffManagement() {
           placeholder="First Name"
           value={formData.first_name}
           onChange={handleInputChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border border-gray-300 p-2 rounded text-black"
         />
         <input
           type="text"
@@ -126,7 +126,7 @@ export default function StaffManagement() {
           placeholder="Surname"
           value={formData.surname}
           onChange={handleInputChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border border-gray-300 p-2 rounded text-black"
         />
         <input
           type="email"
@@ -135,7 +135,7 @@ export default function StaffManagement() {
           placeholder="Email"
           value={formData.email}
           onChange={handleInputChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border border-gray-300 p-2 rounded text-black"
         />
         <input
           type="password"
@@ -144,14 +144,14 @@ export default function StaffManagement() {
           placeholder="Password"
           value={formData.password}
           onChange={handleInputChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border border-gray-300 p-2 rounded text-black"
         />
 
         <select
           name="role"
           value={formData.role}
           onChange={handleInputChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border border-gray-300 p-2 rounded text-black"
         >
           <option value="staff">Staff</option>
           <option value="admin">Admin</option>
@@ -166,9 +166,9 @@ export default function StaffManagement() {
         </button>
       </form>
 
-      <table className="w-full text-sm border">
+      <table className="w-full text-sm border text-black">
         <thead>
-          <tr className="bg-gray-100 text-left">
+          <tr className="bg-gray-100 text-left text-black">
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
             <th className="p-2 border">Role</th>
@@ -178,21 +178,17 @@ export default function StaffManagement() {
         </thead>
         <tbody>
           {staffList.map((staff) => (
-            <tr key={staff.id}>
-              <td className="p-2 border">
-                {staff.first_name} {staff.surname}
-              </td>
+            <tr key={staff.id} className="text-black">
+              <td className="p-2 border">{staff.first_name} {staff.surname}</td>
               <td className="p-2 border">{staff.email}</td>
               <td className="p-2 border capitalize">{staff.role}</td>
-              <td className="p-2 border">
-                {staff.is_active ? 'Active' : 'Inactive'}
-              </td>
+              <td className="p-2 border">{staff.is_active ? 'Active' : 'Inactive'}</td>
               <td className="p-2 border">
                 <button
                   onClick={() => toggleActive(staff.id)}
                   className={`px-3 py-1 text-sm rounded ${
                     staff.is_active
-                      ? 'bg-red-500 text-white'
+                      ? 'bg-[#C8102E] text-white'
                       : 'bg-green-600 text-white'
                   }`}
                 >

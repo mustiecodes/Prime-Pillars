@@ -15,7 +15,7 @@ import { useAuth } from '@/context/AuthProvider'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
 
   const [formData, setFormData] = useState({
     pen_number: '',
@@ -33,15 +33,16 @@ export default function LoginPage() {
     setErrors((prev) => ({ ...prev, [e.target.name]: '' }))
   }
 
-  const handleSubmit = async () => {
-    const newErrors = loginValidator(formData)
+  const handleSubmit = async (penNumber: string) => {
+    const newErrors = loginValidator({ ...formData, pen_number: penNumber })
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
 
     try {
-      await loginUser(formData)
+      await loginUser({ ...formData, pen_number: penNumber })
+      await refreshUser()
       toast.success('Login successful')
       router.push('/')
     } catch (error: any) {
@@ -59,13 +60,15 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           errors={errors}
         />
-
         <div className="mt-4 text-center text-sm text-gray-600">
           Don&apos;t have an account?{' '}
           <Link href="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
         </div>
+        <p className="text-center text-sm text-gray-600 mt-8">
+          &copy; 2025 Prime Pillars Real Estate
+        </p>
       </AuthCard>
     </PageWrapper>
   )

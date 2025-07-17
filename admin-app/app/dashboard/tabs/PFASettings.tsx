@@ -71,14 +71,14 @@ export default function PFASettings() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Manage PFAs</h2>
+      <h2 className="text-xl font-semibold mb-4 text-black">Manage PFAs</h2>
 
       <div className="mb-6">
         <input
           value={newPfa}
           onChange={(e) => setNewPfa(e.target.value)}
           placeholder="PFA Name"
-          className="border border-gray-300 p-2 rounded w-full mb-2"
+          className="border border-gray-300 p-2 rounded w-full mb-2 text-black"
         />
         <button
           onClick={handleAdd}
@@ -90,14 +90,14 @@ export default function PFASettings() {
       </div>
 
       {message && (
-        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}>
+        <p className={`mb-4 text-sm ${message.type === 'error' ? 'text-[#C8102E]' : 'text-green-600'}`}>
           {message.text}
         </p>
       )}
 
       <div>
         <select
-          className="border border-gray-300 p-2 rounded w-full mb-2"
+          className="border border-gray-300 p-2 rounded w-full mb-2 text-black"
           value={selectedPfa}
           onChange={(e) => setSelectedPfa(e.target.value)}
         >

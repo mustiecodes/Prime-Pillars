@@ -13,8 +13,11 @@ def register():
     surname = data.get('surname', '').strip()
     other_names = data.get('other_names', '').strip()
     email = data.get('email', '').strip()
-    pen_number = data.get('pen_number', '').strip()
+    pen_number = data.get('pen_number', '').strip().upper()
     password = data.get('password', '').strip()
+
+    if not pen_number.startswith('PEN'):
+        return jsonify({'error': 'PEN Number must start with PEN'}), 400
 
     if not all([first_name, surname, email, pen_number, password]):
         return jsonify({'error': 'All fields except Other Names are required'}), 400
@@ -42,7 +45,7 @@ def register():
 @auth_bp.route('/api/auth/login', methods=['POST'])
 def login():
     data = request.get_json()
-    pen_number = data.get('pen_number', '').strip()
+    pen_number = data.get('pen_number', '').strip().upper()
     password = data.get('password', '').strip()
 
     if not pen_number or not password:
@@ -50,7 +53,7 @@ def login():
 
     user = User.query.filter_by(pen_number=pen_number).first()
     if not user or not check_password_hash(user.password_hash, password):
-        return jsonify({'error': 'Invalid login credentials'}), 401
+        return jsonify({'error': 'PEN Number or Password is not correct'}), 401
 
     if not user.is_active:
         return jsonify({'error': 'Account is inactive'}), 403

@@ -1,6 +1,11 @@
 {
   "/(auth)/login/page": "app/(auth)/login/page.js",
   "/(auth)/register/page": "app/(auth)/register/page.js",
+  "/(client)/[penNumber]/page": "app/(client)/[penNumber]/page.js",
   "/(client)/page": "app/(client)/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/contact-us/page": "app/contact-us/page.js",
+  "/downloadable-forms/page": "app/downloadable-forms/page.js",
+  "/faqs/page": "app/faqs/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

@@ -16,23 +16,30 @@ export default function AuthCard({
   className = '',
 }: AuthCardProps) {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <section
-        className={`w-full max-w-md bg-white p-6 rounded-lg shadow-md ${className}`}
-        aria-labelledby="auth-title"
-      >
-        <h1 id="auth-title" className="text-2xl font-semibold text-center text-gray-800 mb-2">
-          {title}
-        </h1>
+    <div className="min-h-screen flex flex-col">
+      <section className="flex flex-1 justify-center items-center bg-[#f0f2f5] px-4">
+        <div className={`bg-white p-8 rounded-lg shadow-md max-w-xl w-full flex gap-8 ${className}`}>
+          <div className="w-2/5 flex justify-center items-center">
+            <img
+              src="https://via.placeholder.com/100x100.png?text=Logo"
+              alt="Logo"
+              className="max-w-[100px]"
+            />
+          </div>
 
-        {subtitle && (
-          <p className="text-center text-sm text-gray-600 mb-4">
-            {subtitle}
-          </p>
-        )}
+          <div className="w-3/5 flex flex-col">
+            <h2 className="text-2xl font-bold text-[#0057A0] mb-2">{title}</h2>
 
-        {children}
+            {subtitle && (
+              <p className="text-sm text-gray-600 mb-4">{subtitle}</p>
+            )}
+
+            <div className="flex-1 flex flex-col justify-between">
+              {children}
+            </div>
+          </div>
+        </div>
       </section>
-    </main>
+    </div>
   )
 }
