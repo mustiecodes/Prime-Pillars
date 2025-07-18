@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/(client)/[penNumber]/page": "/[penNumber]",
+  "/(auth)/register/page": "/register",
+  "/(client)/page": "/",
+  "/(auth)/login/page": "/login",
+  "/downloadable-forms/page": "/downloadable-forms",
+  "/faqs/page": "/faqs",
+  "/contact-us/page": "/contact-us"
+}
